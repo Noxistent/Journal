@@ -1,0 +1,31 @@
+Project Name: Journal
+Copyright (C) 2025 Noxist
+
+This project is licensed under the GNU General Public License v3.0.
+
+-------------------------------------------------------------------------
+This product includes software developed by the OpenSSL Project
+for use in the OpenSSL Toolkit (http://www.openssl.org/)
+-------------------------------------------------------------------------
+
+This project makes use of the following third-party software:
+
+1. MMKV
+   Copyright (C) 2018 THL A29 Limited, a Tencent company.
+   Licensed under the BSD 3-Clause License.
+
+2. Retrofit
+   Copyright 2013 Square, Inc.
+   Licensed under the Apache License, Version 2.0.
+
+3. Gson
+   Copyright 2008 Google Inc.
+   Licensed under the Apache License, Version 2.0.
+
+4. Jetpack Compose (Android Jetpack Libraries)
+   Copyright 2019 The Android Open Source Project.
+   Licensed under the Apache License, Version 2.0.
+
+5. zlib
+   Copyright (C) 1995-2017 Jean-loup Gailly and Mark Adler.
+   Licensed under the zlib License.
