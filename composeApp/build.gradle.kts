@@ -51,7 +51,7 @@ android {
         minSdk = 26
         targetSdk = libs.versions.android.targetSdk.get().toInt()
         versionCode = 1
-        versionName = "1.0"
+        versionName = "0.9"
     }
     packaging {
         resources {
