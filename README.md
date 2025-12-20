@@ -12,8 +12,8 @@
 - **UpdateTimeManager (Управление временем):**  
   Отвечает  за  вычисление  текущего  времени  и  определение,  на  какую  неделю  относится  текущее  расписание.
 
-![Black тема](https://github.com/Noxistent/Journal/blob/master/Image/Screenshot_20251221_014502.png) 
-![Write тема](https://github.com/Noxistent/Journal/blob/master/Image/Screenshot_20251221_014530.png)
+![Black тема](https://github.com/Noxistent/Journal/blob/master/image/Screenshot_20251221_014502.png) 
+![Write тема](https://github.com/Noxistent/Journal/blob/master/image/Screenshot_20251221_014530.png)
 
 ## Стек технологий
 * **UI:** Jetpack Compose
