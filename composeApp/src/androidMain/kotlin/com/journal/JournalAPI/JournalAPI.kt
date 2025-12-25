@@ -32,6 +32,7 @@ class JournalAPI (
     private val user: String = StorageMMKV.getUser(),
     private val password: String = StorageMMKV.getPassword(),
     private val BASE_URL: String = "https://msapi.top-academy.ru/",
+    private var accessToken: String = ""
 ) : ViewModel() {
 
     public suspend fun getAuthData(): AuthenticationAPI.AuthData {
@@ -42,12 +43,14 @@ class JournalAPI (
         startTime: LocalDate,
         endTime: LocalDate
     ): MutableList<Timetable> {
-        Log.d("startTime =", startTime.toString())
-        Log.d("endTime =", endTime.toString())
+
+        if (accessToken == ""){
+            accessToken = AuthenticationAPI.getAuthKEY(BASE_URL, user, password).accessToken
+        }
 
         val listDirtyTimetable = TimetableAPI.getTimetable(
             BASE_URL,
-            getAuthData().accessToken,
+            accessToken,
             startTime,
             endTime)
 

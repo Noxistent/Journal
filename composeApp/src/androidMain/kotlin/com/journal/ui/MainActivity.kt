@@ -130,7 +130,7 @@ fun MainWindow(){
                             onClick = {
                                 coroutineScope.launch {
                                     isLoading = true
-                                    updateTimetable()
+                                    UpdateTimeManager().updateTimetable()
                                     (context as? Activity)?.recreate()
                                     isLoading = false
 
@@ -191,6 +191,7 @@ fun MainWindow(){
                         }
                     }
 
+                    // Переход на твой день при запуске
                     coroutineScope.launch {
                         val nowData = LocalDate.now()
                         var num = 0
@@ -207,42 +208,6 @@ fun MainWindow(){
     }
 }
 
-suspend fun updateTimetable() {
-    val currentTimetableOld = StorageMMKV.getTimetable("CurrentTimetable")
-    val nextTimetableOld = StorageMMKV.getTimetable("NextTimetable")
-
-    if (currentTimetableOld != null && nextTimetableOld != null) {
-        val api = JournalAPI()
-        val time = UpdateTimeManager
-        var unsuccess = true
-
-        try {
-            val currentTimetableNew = api.getListTimetable(time.monday, time.sunday)
-            val nextTimetableNew = api.getListTimetable(time.mondayNext, time.sundayNext)
-
-            Log.d("currentTimetableNew = ", currentTimetableNew.toString())
-            Log.d("nextTimetableNew = ", nextTimetableNew.toString())
-
-            StorageMMKV.comparisonTimetable(currentTimetableOld, currentTimetableNew, "CurrentTimetable")
-            StorageMMKV.comparisonTimetable(nextTimetableOld, nextTimetableNew, "NextTimetable")
-            unsuccess = false
-        } catch (e: Exception) {
-            Log.d("Error", e.toString())
-        }
-
-    } else {
-        val time = UpdateTimeManager
-        val api = JournalAPI()
-
-        val currentTimetable = api.getListTimetable(time.monday, time.sunday)
-        val nextTimetable = api.getListTimetable(time.mondayNext, time.sundayNext)
-
-        StorageMMKV.saveTimetable("CurrentTimetable", currentTimetable)
-        StorageMMKV.saveTimetable("NextTimetable", nextTimetable)
-
-    }
-
-}
 
 @SuppressLint("ConfigurationScreenWidthHeight")
 @Composable

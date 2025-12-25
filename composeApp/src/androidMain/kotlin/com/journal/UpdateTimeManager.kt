@@ -1,11 +1,13 @@
 package com.journal
 
 import android.util.Log
+import androidx.compose.foundation.text.input.TextFieldState
+import com.journal.JournalAPI.JournalAPI
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.temporal.TemporalAdjusters
 
-object UpdateTimeManager {
+class UpdateTimeManager {
     var monday: LocalDate
     val sunday: LocalDate
     val mondayNext: LocalDate
@@ -47,5 +49,58 @@ object UpdateTimeManager {
         mondayNext = monday.plusWeeks(1)
         sundayNext = mondayNext.plusDays(6)
 
+    }
+
+    suspend fun updateTimetable() {
+        val currentTimetableOld = StorageMMKV.getTimetable("CurrentTimetable")
+        val nextTimetableOld = StorageMMKV.getTimetable("NextTimetable")
+
+        if (currentTimetableOld != null && nextTimetableOld != null) {
+            val api = JournalAPI()
+            try {
+                val currentTimetableNew = api.getListTimetable(monday, sunday)
+                val nextTimetableNew = api.getListTimetable(mondayNext, sundayNext)
+
+                StorageMMKV.comparisonTimetable(currentTimetableOld, currentTimetableNew, "CurrentTimetable")
+                StorageMMKV.comparisonTimetable(nextTimetableOld, nextTimetableNew, "NextTimetable")
+
+                Log.d("Update", "Successful")
+            } catch (e: Exception) {
+                Log.d("Error", e.toString())
+            }
+
+        } else {
+            val api = JournalAPI()
+
+            val currentTimetable = api.getListTimetable(monday, sunday)
+            val nextTimetable = api.getListTimetable(mondayNext, sundayNext)
+
+            StorageMMKV.saveTimetable("CurrentTimetable", currentTimetable)
+            StorageMMKV.saveTimetable("NextTimetable", nextTimetable)
+
+            Log.d("Error", "Timetable = null")
+
+        }
+
+    }
+
+    suspend fun TestLogin(
+        login: TextFieldState,
+        password: TextFieldState,
+        error: (String) -> Unit,
+        onDismiss: () -> Unit){
+        try {
+            StorageMMKV.kv.encode("User", login.text.toString())
+            StorageMMKV.kv.encode("Password", password.text.toString())
+
+            updateTimetable()
+
+            StorageMMKV.kv.encode("isFirstRun", false)
+            onDismiss()
+        } catch (e: Exception) {
+            StorageMMKV.kv.remove("User")
+            StorageMMKV.kv.remove("Password")
+            error("Error, login or password uncorrect.")
+        }
     }
 }

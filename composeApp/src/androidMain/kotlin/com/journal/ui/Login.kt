@@ -80,7 +80,7 @@ fun LoginDialog(
                     Button(
                         onClick = {
                             scope.launch {
-                                TestLogin(
+                                UpdateTimeManager().TestLogin(
                                     login,
                                     password,
                                     error = {newError ->
@@ -102,30 +102,5 @@ fun LoginDialog(
             }
 
         }
-    }
-}
-
-suspend fun TestLogin(
-    login: TextFieldState,
-    password: TextFieldState,
-    error: (String) -> Unit,
-    onDismiss: () -> Unit){
-    try {
-        StorageMMKV.kv.encode("User", login.text.toString())
-        StorageMMKV.kv.encode("Password", password.text.toString())
-        val api = JournalAPI()
-
-        val time = UpdateTimeManager
-        val currentTimetable = api.getListTimetable(time.monday, time.sunday)
-        val nextTimetable = api.getListTimetable(time.mondayNext, time.sundayNext)
-
-        StorageMMKV.saveTimetable("CurrentTimetable", currentTimetable)
-        StorageMMKV.saveTimetable("NextTimetable", nextTimetable)
-        StorageMMKV.kv.encode("isFirstRun", false)
-        onDismiss()
-    } catch (e: Exception) {
-        StorageMMKV.kv.remove("User")
-        StorageMMKV.kv.remove("Password")
-        error("Error, login or password uncorrect.")
     }
 }

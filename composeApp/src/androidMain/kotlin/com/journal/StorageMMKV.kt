@@ -2,6 +2,7 @@ package com.journal
 
 import android.content.Context
 import android.os.Parcelable
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -24,6 +25,7 @@ object StorageMMKV {
         if (user != null) {
             return user
         } else {
+            Log.d("Error", "USERNAME = null")
             return ""
         }
 
@@ -35,6 +37,7 @@ object StorageMMKV {
         if (password != null) {
             return password
         } else {
+            Log.d("Error", "USERNAME = null")
             return ""
         }
     }
@@ -48,10 +51,10 @@ object StorageMMKV {
         kv.encode(strName, PaddingClassOverMutableList(timetable))
     }
 
-    public fun comparisonTimetable(TimetableOld: MutableList<Timetable>, TimetableNew: MutableList<Timetable>, strName: String) {
-        if (TimetableOld != TimetableNew) {
+    public fun comparisonTimetable(timetableOld: MutableList<Timetable>, timetableNew: MutableList<Timetable>, strName: String) {
+        if (timetableOld != timetableNew) {
             StorageMMKV.kv.remove(strName)
-            StorageMMKV.saveTimetable(strName, TimetableNew)
+            StorageMMKV.saveTimetable(strName, timetableNew)
         }
     }
 
